@@ -1,10 +1,11 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+    <!-- <hamburger class="hamburger-container" :toggleClick="toggleSideBar" ></hamburger> -->
+    <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="!sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar">
+        <img class="user-avatar" src="@/assets/images/user_img.png">
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -25,6 +26,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+// import user_img from '@/assets/images/user_img.png'
 
 export default {
   components: {
@@ -42,9 +44,15 @@ export default {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
-      })
+      // this.$store.dispatch('LogOut').then(() => {
+      //   location.reload() // 为了重新实例化vue-router对象 避免bug
+      // })
+      this.$router.push({path: '/login'})
+
+      // commit('SET_TOKEN', '')
+      // commit('SET_ROLES', [])
+      // removeToken()
+      location.reload()
     }
   }
 }

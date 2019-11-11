@@ -114,8 +114,8 @@
       }
     },
     created() {
-      this.resetParentId();
-      this.getList();
+      // this.resetParentId();
+      // this.getList();
     },
     watch: {
       $route(route) {

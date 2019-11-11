@@ -1,9 +1,32 @@
 import request from '@/utils/request'
 export function fetchList(params) {
   return request({
-    url:'/product/list',
+    url:'/eshop/product/all',
     method:'get',
-    params:params
+  })
+}
+
+export function fetchParamsList(params) {
+  return request({
+    url:'/eshop/product/list',
+    method:'post',
+    data:params
+  })
+}
+
+export function updateProductInfo(pid,data) {
+  return request({
+    url:'/eshop/product/'+pid,
+    method:'put',
+    data:data
+  })
+}
+
+export function AddProduct(params) {
+  return request({
+    url:'/eshop/product',
+    method:'post',
+    data:params
   })
 }
 
@@ -15,11 +38,10 @@ export function fetchSimpleList(params) {
   })
 }
 
-export function updateDeleteStatus(params) {
+export function updateDeleteStatus(pId) {
   return request({
-    url:'/product/update/deleteStatus',
-    method:'post',
-    params:params
+    url:'/eshop/product/' + pId,
+    method:'delete',
   })
 }
 

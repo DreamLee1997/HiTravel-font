@@ -1,14 +1,22 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+export function login(login_name, password) {
   return request({
-    url: '/admin/login',
+    url: '/eshop/user/login',
     method: 'post',
     data: {
-      username,
+      login_name,
       password
     }
   })
+  // return request({
+  //   url: '/admin/login',
+  //   method: 'post',
+  //   data: {
+  //     username,
+  //     password
+  //   }
+  // })
 }
 
 export function getInfo() {

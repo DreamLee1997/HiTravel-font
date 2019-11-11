@@ -33,6 +33,28 @@ export const constantRouterMap = [
     }]
   },
   {
+    path:'/ums',
+    component: Layout,
+    redirect: '/ums/user',
+    name: 'ums',
+    meta: {title: '用户', icon: 'sms'},
+    children: [
+      {
+        path: 'user',
+        name: 'user',
+        component: () => import('@/views/ums/user/index'),
+        meta: {title: '用户管理列表', icon: 'product-list'}
+      },
+      {
+        path: '',
+        name: 'modifyUserInfo',
+        component: () => import('@/views/ums/modifyUserInfo/index'),
+        meta: {title: '修改用户信息', icon: 'order-return-reason'},
+      },
+      
+    ]
+  },
+  {
     path: '/pms',
     component: Layout,
     redirect: '/pms/product',
@@ -48,7 +70,8 @@ export const constantRouterMap = [
         path: 'addProduct',
         name: 'addProduct',
         component: () => import('@/views/pms/product/add'),
-        meta: {title: '添加商品', icon: 'product-add'}
+        meta: {title: '添加商品', icon: 'product-add'},
+        hidden: true
       },
       {
         path: 'updateProduct',
@@ -95,7 +118,8 @@ export const constantRouterMap = [
         path: 'productAttr',
         name: 'productAttr',
         component: () => import('@/views/pms/productAttr/index'),
-        meta: {title: '商品类型', icon: 'product-attr'}
+        meta: {title: '商品类型', icon: 'product-attr'},
+        hidden: true
       },
       {
         path: 'productAttrList',
@@ -122,7 +146,8 @@ export const constantRouterMap = [
         path: 'brand',
         name: 'brand',
         component: () => import('@/views/pms/brand/index'),
-        meta: {title: '品牌管理', icon: 'product-brand'}
+        meta: {title: '品牌管理', icon: 'product-brand'},
+        hidden: true
       },
       {
         path: 'addBrand',
@@ -177,13 +202,15 @@ export const constantRouterMap = [
         path: 'returnApply',
         name: 'returnApply',
         component: () => import('@/views/oms/apply/index'),
-        meta: {title: '退货申请处理', icon: 'order-return'}
+        meta: {title: '退货申请处理', icon: 'order-return'},
+        hidden:true
       },
       {
         path: 'returnReason',
         name: 'returnReason',
         component: () => import('@/views/oms/apply/reason'),
-        meta: {title: '退货原因设置', icon: 'order-return-reason'}
+        meta: {title: '退货原因设置', icon: 'order-return-reason'},
+        hidden:true
       },
       {
         path: 'returnApplyDetail',
@@ -199,13 +226,18 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/sms/coupon',
     name: 'sms',
-    meta: {title: '营销', icon: 'sms'},
+    meta: {title: '活动', icon: 'sms'},
     children: [
       {
         path: 'flash',
         name: 'flash',
         component: () => import('@/views/sms/flash/index'),
         meta: {title: '秒杀活动列表', icon: 'sms-flash'}
+      },{
+        path: 'activity',
+        name: ' activity',
+        component: () => import('@/views/sms/activity/index'),
+        meta: {title: '活动管理', icon: 'order-setting'}
       },
       {
         path: 'flashSession',
@@ -232,7 +264,8 @@ export const constantRouterMap = [
         path: 'coupon',
         name: 'coupon',
         component: () => import('@/views/sms/coupon/index'),
-        meta: {title: '优惠券列表', icon: 'sms-coupon'}
+        meta: {title: '优惠券列表', icon: 'sms-coupon'},
+        hidden: true
       },
       {
         path: 'addCoupon',
@@ -259,31 +292,36 @@ export const constantRouterMap = [
         path: 'brand',
         name: 'homeBrand',
         component: () => import('@/views/sms/brand/index'),
-        meta: {title: '品牌推荐', icon: 'product-brand'}
+        meta: {title: '品牌推荐', icon: 'product-brand'},
+        hidden: true
       },
       {
         path: 'new',
         name: 'homeNew',
         component: () => import('@/views/sms/new/index'),
-        meta: {title: '新品推荐', icon: 'sms-new'}
+        meta: {title: '新品推荐', icon: 'sms-new'},
+        // hidden: true
       },
       {
         path: 'hot',
         name: 'homeHot',
         component: () => import('@/views/sms/hot/index'),
-        meta: {title: '人气推荐', icon: 'sms-hot'}
+        meta: {title: '人气推荐', icon: 'sms-hot'},
+        hidden: true
       },
       {
         path: 'subject',
         name: 'homeSubject',
         component: () => import('@/views/sms/subject/index'),
-        meta: {title: '专题推荐', icon: 'sms-subject'}
+        meta: {title: '专题推荐', icon: 'sms-subject'},
+        hidden: true
       },
       {
         path: 'advertise',
         name: 'homeAdvertise',
         component: () => import('@/views/sms/advertise/index'),
-        meta: {title: '广告列表', icon: 'sms-ad'}
+        meta: {title: '广告列表', icon: 'sms-ad'},
+        hidden: true
       },
       {
         path: 'addAdvertise',

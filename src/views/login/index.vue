@@ -9,7 +9,7 @@
         <div style="text-align: center">
           <svg-icon icon-class="login-mall" style="width: 56px;height: 56px;color: #409EFF"></svg-icon>
         </div>
-        <h2 class="login-title color-main">mall-admin-web</h2>
+        <h2 class="login-title color-main">admin-web</h2>
         <el-form-item prop="username">
           <el-input name="username"
                     type="text"
@@ -40,9 +40,12 @@
           <el-button style="width: 45%" type="primary" :loading="loading" @click.native.prevent="handleLogin">
             登录
           </el-button>
-          <el-button style="width: 45%" type="primary" @click.native.prevent="handleTry">
-            获取体验账号
+          <el-button style="width: 45%" type="primary" @click.native.prevent="handleRegister">
+            注册
           </el-button>
+          <!-- <el-button style="width: 45%" type="primary" @click.native.prevent="handleTry">
+            获取体验账号
+          </el-button> -->
         </el-form-item>
       </el-form>
     </el-card>
@@ -147,6 +150,9 @@
       handleTry(){
         this.dialogVisible =true
       },
+      handleRegister(){
+
+      },
       dialogConfirm(){
         this.dialogVisible =false;
         setSupport(true);
@@ -179,6 +185,6 @@
     height: auto;
     max-width: 100%;
     max-height: 100%;
-    margin-top: 200px;
+    margin-top: 100px;
   }
 </style>
