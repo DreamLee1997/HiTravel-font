@@ -3,80 +3,139 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets" style="margin-top: 5px"></i>
       <span style="margin-top: 5px">数据列表</span>
-      <el-button
-        class="btn-add"
-        @click="handleAddProductCate()"
-        size="mini">
-        添加
-      </el-button>
     </el-card>
     <div class="table-container">
-      <el-table ref="productCateTable"
-                style="width: 100%"
-                :data="list"
-                v-loading="listLoading" border>
-        <el-table-column label="编号" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.id}}</template>
-        </el-table-column>
-        <el-table-column label="分类名称" align="center">
-          <template slot-scope="scope">{{scope.row.name}}</template>
-        </el-table-column>
-        <el-table-column label="级别" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.level | levelFilter}}</template>
-        </el-table-column>
-        <el-table-column label="商品数量" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.productCount }}</template>
-        </el-table-column>
-        <el-table-column label="数量单位" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.productUnit }}</template>
-        </el-table-column>
-        <el-table-column label="导航栏" width="100" align="center">
-          <template slot-scope="scope">
-            <el-switch
-              @change="handleNavStatusChange(scope.$index, scope.row)"
-              :active-value="1"
-              :inactive-value="0"
-              v-model="scope.row.navStatus">
-            </el-switch>
+      <el-table
+        v-loading="listLoading"
+        :data="list"
+        style="width: 100%;margin-bottom: 20px;"
+        row-key="category_id" 
+        :expand-row-keys='expendRowKeys'
+        >
+        <el-table-column type="expand"  >
+          <template  slot-scope="props">
+             <el-table
+              :data="props.row.children"
+              style="width: 100%;margin-bottom: 10px;"
+              row-key="category_id"
+              :expand-row-keys='expendRowKeys'
+              >
+              <el-table-column type="expand">
+                <template slot-scope="prop">
+                   <el-table
+                    :data="prop.row.children"
+                    style="width: 100%;margin-bottom: 10px;"
+                    row-key="category_id"
+                    >
+                    <el-table-column
+                      prop="category_name"
+                      label="商品类别名称">
+                    </el-table-column>
+                    <el-table-column
+                      prop="category_level"
+                      label="商品类别等级">
+                    </el-table-column>
+                    <el-table-column
+                      prop="category_status"
+                      label="商品类别状态">
+                    </el-table-column>
+                    <el-table-column
+                      prop="parent_id"
+                      label="商品父类别ID">
+                    </el-table-column>
+                    <el-table-column
+                      prop="category_id"
+                      label="商品类别ID">
+                    </el-table-column>
+                    <el-table-column label="操作" width="230px" align="center">
+                      <template slot-scope="scope">
+                        <el-button
+                          size="mini"
+                          @click="handleLevelChange(scope.$index, scope.row, 1)">编辑</el-button>
+                        <el-button
+                          size="mini"
+                          type="primary"
+                          @click="handleLevelChange(scope.$index, scope.row, 2)">添加</el-button>
+                        <el-button
+                          size="mini"
+                          type="danger"
+                          @click="handleDeleteLevel(scope.$index, scope.row)">删除</el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="category_name"
+                label="商品类别名称">
+              </el-table-column>
+              <el-table-column
+                prop="category_level"
+                label="商品类别等级">
+              </el-table-column>
+              <el-table-column
+                prop="category_status"
+                label="商品类别状态">
+              </el-table-column>
+              <el-table-column
+                prop="parent_id"
+                label="商品父类别ID">
+              </el-table-column>
+              <el-table-column
+                prop="category_id"
+                label="商品类别ID">
+              </el-table-column>
+              <el-table-column label="操作" width="230px" align="center">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    @click="handleLevelChange(scope.$index, scope.row, 1)">编辑</el-button>
+                  <el-button
+                    size="mini"
+                    type="primary"
+                    @click="handleLevelChange(scope.$index, scope.row, 2)">添加</el-button>
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="handleDeleteLevel(scope.$index, scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
           </template>
         </el-table-column>
-        <el-table-column label="是否显示" width="100" align="center">
-          <template slot-scope="scope">
-            <el-switch
-              @change="handleShowStatusChange(scope.$index, scope.row)"
-              :active-value="1"
-              :inactive-value="0"
-              v-model="scope.row.showStatus">
-            </el-switch>
-          </template>
+        <el-table-column
+          prop="category_name"
+          label="商品类别名称">
         </el-table-column>
-        <el-table-column label="排序" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.sort }}</template>
+        <el-table-column
+          prop="category_level"
+          label="商品类别等级">
         </el-table-column>
-        <el-table-column label="设置" width="200" align="center">
+        <el-table-column
+          prop="category_status"
+          label="商品类别状态">
+        </el-table-column>
+        <el-table-column
+          prop="parent_id"
+          label="商品父类别ID">
+        </el-table-column>
+        <el-table-column
+          prop="category_id"
+          label="商品类别ID">
+        </el-table-column>
+        <el-table-column label="操作" width="230px" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
-              :disabled="scope.row.level | disableNextLevel"
-              @click="handleShowNextLevel(scope.$index, scope.row)">查看下级
-            </el-button>
+              @click="handleLevelChange(scope.$index, scope.row, 1)">编辑</el-button>
             <el-button
               size="mini"
-              @click="handleTransferProduct(scope.$index, scope.row)">转移商品
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              @click="handleUpdate(scope.$index, scope.row)">编辑
-            </el-button>
+              type="primary"
+              @click="handleLevelChange(scope.$index, scope.row, 2)">添加</el-button>
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)">删除
-            </el-button>
+              @click="handleDeleteLevel(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -93,11 +152,42 @@
         :total="total">
       </el-pagination>
     </div>
+     <el-dialog
+      :title="title"
+      :visible.sync="handleLevelDialogVisible"
+      width="50%">
+       <el-form  :model="handleLevel" size="small" label-width="140px">
+          <el-form-item label="商品类别名称：">
+            <el-input 
+              style="width: 203px" 
+              v-model="handleLevel.category_name" 
+              placeholder="请输入商品类别名称"></el-input>
+          </el-form-item>
+          <el-form-item label="商品类别等级：">
+            <el-input 
+              style="width: 203px" 
+              :disabled="isdisable"
+              v-model="handleLevel.category_level" 
+              placeholder="请输入商品类别等级"></el-input> 
+          </el-form-item>
+          <el-form-item label="商品父类别ID：">
+            <el-input 
+              style="width: 203px" 
+              :disabled="isdisable"
+              v-model="handleLevel.parent_id" 
+              placeholder="请输入商品父类别ID"></el-input> 
+          </el-form-item>
+        </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleLevelDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleLevelConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {fetchList,deleteProductCate,updateShowStatus,updateNavStatus} from '@/api/productCate'
+  import {fetchList, fetchLevelList, handleEditLevel, handleAddLevel, handleDeleteLevelRequest} from '@/api/productCate'
 
   export default {
     name: "productCateList",
@@ -105,42 +195,89 @@
       return {
         list: null,
         total: null,
-        listLoading: true,
+        list:[],
+        title:'',
         listQuery: {
           pageNum: 1,
-          pageSize: 5
+          pageSize: 10
         },
-        parentId: 0
+        expendRowKeys:[],
+        handleLevel:{},
+        parentId: 0,
+        isdisable:false,
+        listLoading: false,
+        handleLevelDialogVisible:false,
       }
     },
     created() {
-      // this.resetParentId();
-      // this.getList();
-    },
-    watch: {
-      $route(route) {
-        this.resetParentId();
-        this.getList();
-      }
+      this.getList();
     },
     methods: {
-      resetParentId(){
-        this.listQuery.pageNum = 1;
-        if (this.$route.query.parentId != null) {
-          this.parentId = this.$route.query.parentId;
-        } else {
-          this.parentId = 0;
-        }
-      },
-      handleAddProductCate() {
-        this.$router.push('/pms/addProductCate');
-      },
       getList() {
         this.listLoading = true;
-        fetchList(this.parentId, this.listQuery).then(response => {
+        fetchList(this.parentId).then(response => {
+          this.list = response.data.children;
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.expendRowKeys = [];
+        });
+      },
+      handleLevelConfirm(){
+        let params = {
+          "category_level": this.handleLevel.category_level,
+          "category_name": this.handleLevel.category_name,
+          "parent_id": this.handleLevel.parent_id
+        }
+        if(this.title === '编辑商品分类'){
+          handleEditLevel(this.handleLevel.category_id, params).then(response => {
+            this.$message({
+              message: '修改成功',
+              type: 'success',
+              duration: 1000
+            });
+            this.getList();
+            this.handleLevelDialogVisible = false;
+          });
+        }else{
+          handleAddLevel(params).then(response => {
+            this.$message({
+              message: '添加成功',
+              type: 'success',
+              duration: 1000
+            });
+            this.getList();
+            this.handleLevelDialogVisible = false;
+          });
+        }
+      },
+      handleLevelChange(index,row,flag){
+        // console.log(row,flag);
+        this.handleLevel = {};
+        this.isdisable = false;
+        if(flag === 1){
+          this.handleLevel = row;
+          this.title = '编辑商品分类';
+        }else{
+          // this.handleLevel.category_level = row.category_level;
+          // this.handleLevel.parent_id = row.parent_id;
+          // this.isdisable = true;
+          this.title = '添加商品分类';
+        }
+        this.handleLevelDialogVisible = true;
+      },
+      handleDeleteLevel(index, row){
+        this.$confirm('是否要进行删除', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+          handleDeleteLevelRequest(row.category_id).then(response=>{
+            this.$message({
+              message: '删除成功',
+              type: 'success',
+              duration: 1000
+            });
+            this.getList();
+          });
         });
       },
       handleSizeChange(val) {
@@ -152,75 +289,6 @@
         this.listQuery.pageNum = val;
         this.getList();
       },
-      handleNavStatusChange(index, row) {
-        let data = new URLSearchParams();
-        let ids=[];
-        ids.push(row.id)
-        data.append('ids',ids);
-        data.append('navStatus',row.navStatus);
-        updateNavStatus(data).then(response=>{
-          this.$message({
-            message: '修改成功',
-            type: 'success',
-            duration: 1000
-          });
-        });
-      },
-      handleShowStatusChange(index, row) {
-        let data = new URLSearchParams();
-        let ids=[];
-        ids.push(row.id)
-        data.append('ids',ids);
-        data.append('showStatus',row.showStatus);
-        updateShowStatus(data).then(response=>{
-          this.$message({
-            message: '修改成功',
-            type: 'success',
-            duration: 1000
-          });
-        });
-      },
-      handleShowNextLevel(index, row) {
-        this.$router.push({path: '/pms/productCate', query: {parentId: row.id}})
-      },
-      handleTransferProduct(index, row) {
-        console.log('handleAddProductCate');
-      },
-      handleUpdate(index, row) {
-        this.$router.push({path:'/pms/updateProductCate',query:{id:row.id}});
-      },
-      handleDelete(index, row) {
-        this.$confirm('是否要删除该品牌', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          deleteProductCate(row.id).then(response => {
-            this.$message({
-              message: '删除成功',
-              type: 'success',
-              duration: 1000
-            });
-            this.getList();
-          });
-        });
-      }
-    },
-    filters: {
-      levelFilter(value) {
-        if (value === 0) {
-          return '一级';
-        } else if (value === 1) {
-          return '二级';
-        }
-      },
-      disableNextLevel(value) {
-        if (value === 0) {
-          return false;
-        } else {
-          return true;
-        }
-      }
     }
   }
 </script>

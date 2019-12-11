@@ -11,7 +11,7 @@
       </el-button>
     </el-card>
     <div class="table-container">
-        <el-table
+        <!-- <el-table
             :data="list"
             style="width: 100%">
             <el-table-column prop="user_id" label="ID"></el-table-column>
@@ -22,7 +22,7 @@
             <el-table-column  label="角色">
                 <template slot-scope="scope" ><p v-if="scope.row.nickname">管理员</p></template>
             </el-table-column>
-        </el-table>
+        </el-table> -->
     </div>
     <div class="pagination-container">
       <el-pagination

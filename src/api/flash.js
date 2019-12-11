@@ -1,9 +1,30 @@
 import request from '@/utils/request'
 export function fetchList(params) {
   return request({
-    url:'/flash/list',
-    method:'get',
-    params:params
+    url:'/eshop/sys/activity/list',
+    method:'post',
+    data:params
+  })
+}
+export function addActivityRequest(params) {
+  return request({
+    url:'/eshop/sys/activity',
+    method:'post',
+    data:params
+  })
+}
+
+export function editActivityRequest(id,params) {
+  return request({
+    url:'/eshop/sys/activity/'+id,
+    method:'put',
+    data:params
+  })
+}
+export function cancelActivityRequest(id) {
+  return request({
+    url:'/eshop/sys/activity/cancel/'+id,
+    method:'post',
   })
 }
 export function updateStatus(id,params) {

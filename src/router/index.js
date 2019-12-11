@@ -48,7 +48,7 @@ export const constantRouterMap = [
       {
         path: '',
         name: 'modifyUserInfo',
-        component: () => import('@/views/ums/modifyUserInfo/index'),
+        component: () => import('@/views/ums/modifyUserInfo/index.vue'),
         meta: {title: '修改用户信息', icon: 'order-return-reason'},
       },
       
@@ -232,7 +232,7 @@ export const constantRouterMap = [
         path: 'flash',
         name: 'flash',
         component: () => import('@/views/sms/flash/index'),
-        meta: {title: '秒杀活动列表', icon: 'sms-flash'}
+        meta: {title: '活动列表', icon: 'sms-flash'}
       },{
         path: 'activity',
         name: ' activity',
@@ -300,7 +300,7 @@ export const constantRouterMap = [
         name: 'homeNew',
         component: () => import('@/views/sms/new/index'),
         meta: {title: '新品推荐', icon: 'sms-new'},
-        // hidden: true
+        hidden: true
       },
       {
         path: 'hot',

@@ -1,8 +1,9 @@
 import request from '@/utils/request'
 export function fetchList(params) {
   return request({
-    url:'/eshop/product/all',
-    method:'get',
+    url:'/eshop/sys/product/list',
+    method:'post',
+    data:params
   })
 }
 
@@ -16,17 +17,17 @@ export function fetchParamsList(params) {
 
 export function updateProductInfo(pid,data) {
   return request({
-    url:'/eshop/product/'+pid,
+    url:'/eshop/sys/product/'+pid,
     method:'put',
     data:data
   })
 }
 
-export function AddProduct(params) {
+export function AddProduct(params,config) {
   return request({
-    url:'/eshop/product',
+    url:'/eshop/sys/product',
     method:'post',
-    data:params
+    data:params,
   })
 }
 
@@ -40,7 +41,7 @@ export function fetchSimpleList(params) {
 
 export function updateDeleteStatus(pId) {
   return request({
-    url:'/eshop/product/' + pId,
+    url:'/eshop/sys/product/' + pId,
     method:'delete',
   })
 }

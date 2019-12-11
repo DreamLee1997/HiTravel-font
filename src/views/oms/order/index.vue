@@ -1,7 +1,7 @@
 <template> 
   <div class="app-container">
     <el-card class="filter-container" shadow="never">
-      <div>
+      <div style="height:30px;">
         <i class="el-icon-search"></i>
         <span>筛选搜索</span>
         <el-button
@@ -20,42 +20,15 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="输入搜索：">
-            <el-input v-model="listQuery.orderSn" class="input-width" placeholder="订单编号"></el-input>
+          <el-form-item label="订单编号：">
+            <el-input v-model="listQuery.order_num" class="input-width" placeholder="请输入订单编号"></el-input>
           </el-form-item>
           <el-form-item label="收货人：">
-            <el-input v-model="listQuery.receiverKeyword" class="input-width" placeholder="收货人姓名/手机号码"></el-input>
+            <el-input v-model="listQuery.nickname" class="input-width" placeholder="请输入收货人姓名"></el-input>
           </el-form-item>
-          <el-form-item label="提交时间：">
-            <el-date-picker
-              class="input-width"
-              v-model="listQuery.createTime"
-              value-format="yyyy-MM-dd"
-              type="date"
-              placeholder="请选择时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="订单状态：">
-            <el-select v-model="listQuery.status" class="input-width" placeholder="全部" clearable>
-              <el-option v-for="item in statusOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="订单分类：">
-            <el-select v-model="listQuery.orderType" class="input-width" placeholder="全部" clearable>
-              <el-option v-for="item in orderTypeOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="订单来源：">
-            <el-select v-model="listQuery.sourceType" class="input-width" placeholder="全部" clearable>
-              <el-option v-for="item in sourceTypeOptions"
+          <el-form-item label="支付方式：">
+            <el-select v-model="listQuery.pay_method" class="input-width" placeholder="全部" clearable>
+              <el-option v-for="item in orderPayOptions"
                          :key="item.value"
                          :label="item.label"
                          :value="item.value">
@@ -76,29 +49,24 @@
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
-        <el-table-column label="编号" width="80" align="center">
-          <template slot-scope="scope">{{scope.row.id}}</template>
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column label="订单编号" :show-overflow-tooltip='istooltip' width="180" align="center">
+          <template slot-scope="scope">{{scope.row.order_num}}</template>
         </el-table-column>
-        <el-table-column label="订单编号" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.orderSn}}</template>
+        <el-table-column label="提交时间" :show-overflow-tooltip='istooltip' width="180" align="center">
+          <template slot-scope="scope">{{scope.row.create_time | formatCreateTime}}</template>
         </el-table-column>
-        <el-table-column label="提交时间" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.createTime | formatCreateTime}}</template>
-        </el-table-column>
-        <el-table-column label="用户账号" align="center">
-          <template slot-scope="scope">{{scope.row.memberUsername}}</template>
+        <el-table-column label="用户昵称" align="center">
+          <template slot-scope="scope">{{scope.row.nickname}}</template>
         </el-table-column>
         <el-table-column label="订单金额" width="120" align="center">
-          <template slot-scope="scope">￥{{scope.row.totalAmount}}</template>
+          <template slot-scope="scope">￥{{scope.row.total_price}}</template>
         </el-table-column>
         <el-table-column label="支付方式" width="120" align="center">
-          <template slot-scope="scope">{{scope.row.payType | formatPayType}}</template>
-        </el-table-column>
-        <el-table-column label="订单来源" width="120" align="center">
-          <template slot-scope="scope">{{scope.row.sourceType | formatSourceType}}</template>
+          <template slot-scope="scope">{{scope.row.pay_method | formatPayType}}</template>
         </el-table-column>
         <el-table-column label="订单状态" width="120" align="center">
-          <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
+          <template slot-scope="scope">{{scope.row.order_status | formatStatus}}</template>
         </el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
@@ -106,7 +74,7 @@
               size="mini"
               @click="handleViewOrder(scope.$index, scope.row)"
             >查看订单</el-button>
-            <el-button
+            <!-- <el-button
               size="mini"
               @click="handleCloseOrder(scope.$index, scope.row)"
               v-show="scope.row.status===0">关闭订单</el-button>
@@ -122,7 +90,7 @@
               size="mini"
               type="danger"
               @click="handleDeleteOrder(scope.$index, scope.row)"
-              v-show="scope.row.status===4">删除订单</el-button>
+              v-show="scope.row.status===4">删除订单</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -153,8 +121,8 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         layout="total, sizes,prev, pager, next,jumper"
-        :current-page.sync="listQuery.pageNum"
-        :page-size="listQuery.pageSize"
+        :current-page.sync="listQuery.page"
+        :page-size="listQuery.size"
         :page-sizes="[5,10,15]"
         :total="total">
       </el-pagination>
@@ -183,14 +151,13 @@
   import {formatDate} from '@/utils/date';
   import LogisticsDialog from '@/views/oms/order/components/logisticsDialog';
   const defaultListQuery = {
-    pageNum: 1,
-    pageSize: 10,
-    orderSn: null,
-    receiverKeyword: null,
-    status: null,
-    orderType: null,
-    sourceType: null,
-    createTime: null,
+    page: 1,
+    size: 10,
+    nickname: null,
+    order_id: null,
+    order_num: null,
+    pay_method: null,
+    user_id: null,
   };
   export default {
     name: "orderList",
@@ -202,52 +169,25 @@
         list: null,
         total: null,
         operateType: null,
+        istooltip:true,
         multipleSelection: [],
         closeOrder:{
           dialogVisible:false,
           content:null,
           orderIds:[]
         },
-        statusOptions: [
+        orderPayOptions:[
           {
-            label: '待付款',
-            value: 0
-          },
-          {
-            label: '待发货',
+            label: "余额",
             value: 1
           },
           {
-            label: '已发货',
+            label: "微信",
             value: 2
           },
           {
-            label: '已完成',
+            label: "支付宝",
             value: 3
-          },
-          {
-            label: '已关闭',
-            value: 4
-          }
-        ],
-        orderTypeOptions: [
-          {
-            label: '正常订单',
-            value: 0
-          },
-          {
-            label: '秒杀订单',
-            value: 1
-          }
-        ],
-        sourceTypeOptions: [
-          {
-            label: 'PC订单',
-            value: 0
-          },
-          {
-            label: 'APP订单',
-            value: 1
           }
         ],
         operateOptions: [
@@ -277,33 +217,22 @@
       },
       formatPayType(value) {
         if (value === 1) {
-          return '支付宝';
+          return '余额';
         } else if (value === 2) {
           return '微信';
         } else {
-          return '未支付';
-        }
-      },
-      formatSourceType(value) {
-        if (value === 1) {
-          return 'APP订单';
-        } else {
-          return 'PC订单';
+          return '支付宝';
         }
       },
       formatStatus(value) {
         if (value === 1) {
-          return '待发货';
+          return '已下单';
         } else if (value === 2) {
-          return '已发货';
+          return '送货中';
         } else if (value === 3) {
           return '已完成';
-        } else if (value === 4) {
-          return '已关闭';
-        } else if (value === 5) {
-          return '无效订单';
         } else {
-          return '待付款';
+          return '退货';
         }
       },
     },
@@ -312,14 +241,15 @@
         this.listQuery = Object.assign({}, defaultListQuery);
       },
       handleSearchList() {
-        this.listQuery.pageNum = 1;
+        this.listQuery.page = 1;
         this.getList();
       },
       handleSelectionChange(val){
         this.multipleSelection = val;
       },
       handleViewOrder(index, row){
-        this.$router.push({path:'/oms/orderDetail',query:{id:row.id}})
+        console.log('订单详情！')
+        // this.$router.push({path:'/oms/orderDetail',query:{id:row.id}})
       },
       handleCloseOrder(index, row){
         this.closeOrder.dialogVisible=true;
@@ -346,46 +276,46 @@
           });
           return;
         }
-        if(this.operateType===1){
-          //批量发货
-          let list=[];
-          for(let i=0;i<this.multipleSelection.length;i++){
-            if(this.multipleSelection[i].status===1){
-              list.push(this.covertOrder(this.multipleSelection[i]));
-            }
-          }
-          if(list.length===0){
-            this.$message({
-              message: '选中订单中没有可以发货的订单',
-              type: 'warning',
-              duration: 1000
-            });
-            return;
-          }
-          this.$router.push({path:'/oms/deliverOrderList',query:{list:list}})
-        }else if(this.operateType===2){
-          //关闭订单
-          this.closeOrder.orderIds=[];
-          for(let i=0;i<this.multipleSelection.length;i++){
-            this.closeOrder.orderIds.push(this.multipleSelection[i].id);
-          }
-          this.closeOrder.dialogVisible=true;
-        }else if(this.operateType===3){
-          //删除订单
-          let ids=[];
-          for(let i=0;i<this.multipleSelection.length;i++){
-            ids.push(this.multipleSelection[i].id);
-          }
-          this.deleteOrder(ids);
-        }
+        // if(this.operateType===1){
+        //   //批量发货
+        //   let list=[];
+        //   for(let i=0;i<this.multipleSelection.length;i++){
+        //     if(this.multipleSelection[i].status===1){
+        //       list.push(this.covertOrder(this.multipleSelection[i]));
+        //     }
+        //   }
+        //   if(list.length===0){
+        //     this.$message({
+        //       message: '选中订单中没有可以发货的订单',
+        //       type: 'warning',
+        //       duration: 1000
+        //     });
+        //     return;
+        //   }
+        //   this.$router.push({path:'/oms/deliverOrderList',query:{list:list}})
+        // }else if(this.operateType===2){
+        //   //关闭订单
+        //   this.closeOrder.orderIds=[];
+        //   for(let i=0;i<this.multipleSelection.length;i++){
+        //     this.closeOrder.orderIds.push(this.multipleSelection[i].id);
+        //   }
+        //   this.closeOrder.dialogVisible=true;
+        // }else if(this.operateType===3){
+        //   //删除订单
+        //   let ids=[];
+        //   for(let i=0;i<this.multipleSelection.length;i++){
+        //     ids.push(this.multipleSelection[i].id);
+        //   }
+        //   this.deleteOrder(ids);
+        // }
       },
       handleSizeChange(val){
-        this.listQuery.pageNum = 1;
-        this.listQuery.pageSize = val;
+        this.listQuery.page = 1;
+        this.listQuery.size = val;
         this.getList();
       },
       handleCurrentChange(val){
-        this.listQuery.pageNum = val;
+        this.listQuery.page = val;
         this.getList();
       },
       handleCloseOrderConfirm() {
@@ -415,8 +345,8 @@
         this.listLoading = true;
         fetchList(this.listQuery).then(response => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = response.data;
+          this.total = response.data.length;
         });
       },
       deleteOrder(ids){

@@ -1,9 +1,39 @@
 import request from '@/utils/request'
-export function fetchList(parentId,params) {
+export function fetchList(parentId) {
   return request({
-    url:'/productCategory/list/'+parentId,
+    url:'/eshop/sys/category/tree/'+parentId,
     method:'get',
-    params:params
+    // params:params
+  })
+}
+
+export function fetchLevelList(parentId) {
+  return request({
+    url:'/eshop/sys/category/tree/'+parentId,
+    method:'get',
+    // params:params
+  })
+}
+
+export function handleAddLevel(params) {
+  return request({
+    url:'/eshop/sys/category',
+    method:'post',
+    data:params
+  })
+}
+
+export function handleDeleteLevelRequest(id) {
+  return request({
+    url:'/eshop/sys/category/' + id,
+    method:'delete',
+  })
+}
+export function handleEditLevel(id,params) {
+  return request({
+    url:'/eshop/sys/category/' + id,
+    method:'put',
+    data:params
   })
 }
 export function deleteProductCate(id) {
@@ -54,7 +84,7 @@ export function updateNavStatus(data) {
 
 export function fetchListWithChildren() {
   return request({
-    url:'/productCategory/list/withChildren',
+    url:'/eshop/sys/category/tree/0',
     method:'get'
   })
 }
