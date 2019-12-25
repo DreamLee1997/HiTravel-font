@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
 
-    <!-- <div class="total-layout">
+    <div class="total-layout">
       <el-row :gutter="20">
         <el-col :span="6">
           <div class="total-frame">
@@ -142,7 +142,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="statistics-layout">
+    <!-- <div class="statistics-layout">
       <div class="layout-title">订单统计</div>
       <el-row>
         <el-col :span="4">
@@ -287,9 +287,9 @@
       // this.getData();
     },
     methods:{
-      // handleDateChange(){
-      //   this.getData();
-      // },
+      handleDateChange(){
+        // this.getData();
+      },
       initOrderCountDate(){
         let start = new Date();
         start.setFullYear(2018);

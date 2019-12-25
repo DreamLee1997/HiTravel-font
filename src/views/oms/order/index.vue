@@ -123,11 +123,67 @@
         layout="total, sizes,prev, pager, next,jumper"
         :current-page.sync="listQuery.page"
         :page-size="listQuery.size"
-        :page-sizes="[5,10,15]"
+        :page-sizes="[20,30,40]"
         :total="total">
       </el-pagination>
     </div>
     <el-dialog
+      title="订单详情"
+      :visible.sync="viewOrderDialogVisible" width="40%">
+      <el-form :model="orderDetail"
+               ref="addActivityForm"
+               label-width="150px" 
+               size="small" disabled>
+        <el-form-item label="订单ID：">
+          <el-input v-model="orderDetail.order_id" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="订单编号：">
+          <el-input v-model="orderDetail.order_num" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="下单时间：">
+          <el-input v-model="orderDetail.create_time" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="支付方式：">
+          <el-select v-model="orderDetail.order_status" placeholder="请选择">
+            <el-option
+              v-for="item in orderPayOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+         <el-form-item label="订单状态：">
+          <el-select v-model="orderDetail.pay_method" placeholder="请选择">
+            <el-option
+              v-for="item in statusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="用户ID：">
+          <el-input v-model="orderDetail.user_id" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="用户昵称：">
+          <el-input v-model="orderDetail.nickname" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="订单总价：">
+          <el-input v-model="orderDetail.total_price" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="收获地址：">
+          <el-input 
+            v-model="orderDetail.address" 
+            type="textarea" :rows="3"  
+            style="width: 300px"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="viewOrderDialogVisible = false" type="primary">取 消</el-button>
+      </span>
+    </el-dialog>
+    <!-- <el-dialog
       title="关闭订单"
       :visible.sync="closeOrder.dialogVisible" width="30%">
       <span style="vertical-align: top">操作备注：</span>
@@ -142,7 +198,7 @@
         <el-button @click="closeOrder.dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleCloseOrderConfirm">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <logistics-dialog v-model="logisticsDialogVisible"></logistics-dialog>
   </div>
 </template>
@@ -152,7 +208,7 @@
   import LogisticsDialog from '@/views/oms/order/components/logisticsDialog';
   const defaultListQuery = {
     page: 1,
-    size: 10,
+    size: 20,
     nickname: null,
     order_id: null,
     order_num: null,
@@ -171,11 +227,30 @@
         operateType: null,
         istooltip:true,
         multipleSelection: [],
+        orderDetail:{},
         closeOrder:{
           dialogVisible:false,
           content:null,
           orderIds:[]
         },
+        statusOptions:[
+          {
+            label: "已下单",
+            value: 1
+          },
+          {
+            label: "送货中",
+            value: 2
+          },
+          {
+            label: "已完成",
+            value: 3
+          },
+          {
+            label: "退货中",
+            value: 4
+          }
+        ],
         orderPayOptions:[
           {
             label: "余额",
@@ -204,6 +279,7 @@
             value: 3
           }
         ],
+        viewOrderDialogVisible:false,
         logisticsDialogVisible:false
       }
     },
@@ -248,7 +324,9 @@
         this.multipleSelection = val;
       },
       handleViewOrder(index, row){
-        console.log('订单详情！')
+        this.viewOrderDialogVisible = true;
+        this.orderDetail = row;
+        console.log(this.orderDetail);
         // this.$router.push({path:'/oms/orderDetail',query:{id:row.id}})
       },
       handleCloseOrder(index, row){
@@ -387,6 +465,9 @@
 <style scoped>
   .input-width {
     width: 203px;
+  }
+  .el-input.is-disabled .el-input__inner{ 
+    color: #606266 !important; 
   }
 </style>
 

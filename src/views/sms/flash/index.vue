@@ -93,7 +93,7 @@
               <el-button
                 size="mini"
                 type="danger"
-                v-if="scope.row.status !== -1"
+                v-if="scope.row.status == 1||scope.row.status == 2"
                 @click="handleCancleActivity(scope.$index, scope.row)">取消
               </el-button>
             </p>
@@ -109,7 +109,7 @@
         layout="total, sizes,prev, pager, next,jumper"
         :current-page.sync="listQuery.page"
         :page-size="listQuery.size"
-        :page-sizes="[5,10,15]"
+        :page-sizes="[20,30,40]"
         :total="total">
       </el-pagination>
     </div>
@@ -201,7 +201,7 @@
 
   const defaultListQuery = {
     page: 1,
-    size: 5,
+    size: 20,
     status: null,
     activity_type:'',
     end_select_time:'',

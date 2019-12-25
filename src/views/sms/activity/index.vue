@@ -100,11 +100,13 @@
           <template slot-scope="scope">
               <el-button
                 size="mini"
+                v-if="scope.row.status == 1 || scope.row.status == 2"
                 @click="handleBindProduct(scope.$index, scope.row)">绑定商品
               </el-button>
               <el-button
                 size="mini"
                 type="danger"
+                v-if="scope.row.status == 1 || scope.row.status == 2"
                 @click="handleCancelBindPt(scope.$index, scope.row)">解绑商品
               </el-button>
           </template>
@@ -119,7 +121,7 @@
         layout="total, sizes,prev, pager, next,jumper"
         :current-page.sync="listQuery.page"
         :page-size="listQuery.size"
-        :page-sizes="[5,10,15]"
+        :page-sizes="[20,30,40]"
         :total="total">
       </el-pagination>
     </div>
@@ -141,14 +143,13 @@
             style="width: 65%;"
             @focus="filterOptions"
             >
-                <!-- <div v-for="(ele,index) in activityProducts" :key="index"> -->
-                    <el-option
-                        v-for="item in productOptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-             <!-- </div> -->
+              <el-option
+                  v-for="item in productOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  :disabled="item.disabled">
+              </el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -177,7 +178,7 @@
                 <div v-for="(ele,index) in activityProducts" :key="index">
                     <el-option
                         v-show="item.value == ele.product_id"
-                        v-for="item in productOptions"
+                        v-for="item in productOptionsDefaut"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -201,7 +202,7 @@ import {fetchList as fetchProductList} from '@/api/product';
 
 const defaultListQuery = {
     page: 1,
-    size: 5,
+    size: 20,
     status: null,
     activity_type:'',
     end_select_time:'',
@@ -293,35 +294,16 @@ export default {
             return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
         },
         filterOptions(){
-          let lastOptions = []
-          this.productOptions = Object.assign([], this.productOptionsDefaut);
-          console.log(this.productOptions)
-            this.productOptions.map((item)=>{
-              if(this.activityProducts.length){
-                  let option = {}
-                  this.activityProducts.forEach((ele)=>{
-                    if(ele.product_id == item.product_id){
-                         option = {
-                          value:item.product_id,
-                          label:item.product_name,
-                          disabled:true
-                        };
-                        // item.disabled = true
-                        // item.disabled = true;
-                    }else{
-                        option = {
-                          value:item.product_id,
-                          label:item.product_name,
-                          disabled:false
-                        };
-                    }
-                    
-                })
-                
-                lastOptions.push(option)
-                console.log(lastOptions)
-              }
-            })
+            this.productOptions = [];
+            if(!this.activityProducts.length){
+              this.productOptions = this.productOptionsDefaut;
+              return false;
+            }
+            let arr1 = this.activityProducts
+            let arr2 = this.productOptionsDefaut
+            
+            let add=arr2.filter(item=>!arr1.some(ele=>ele.product_id===item.value)) 
+            this.productOptions = add;
             
         },
         handleBindProduct(index, row){
