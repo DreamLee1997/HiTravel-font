@@ -18,7 +18,7 @@
           重置
         </el-button>
       </div>
-      <div style="margin-top: 15px">
+      <div style="margin-top: 10px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
           <el-form-item label="订单编号：">
             <el-input v-model="listQuery.order_num" class="input-width" placeholder="请输入订单编号"></el-input>
