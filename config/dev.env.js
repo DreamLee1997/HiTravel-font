@@ -7,3 +7,4 @@ module.exports = merge(prodEnv, {
   BASE_API: '"http://wuweijie.net:8088"'
   // BASE_API: '"http://39.98.190.128:8080"',
 })
+
