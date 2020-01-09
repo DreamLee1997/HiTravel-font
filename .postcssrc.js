@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: lixiang
+ * @Date: 2020-01-09 19:48:30
+ * @LastEditors: lixiang
+ * @LastEditTime: 2020-01-09 20:06:59
+ */
 // https://github.com/michael-ciniawsky/postcss-load-config
 
 module.exports = {
@@ -8,3 +16,4 @@ module.exports = {
     "autoprefixer": {}
   }
 }
+

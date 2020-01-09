@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: lixiang
+ * @Date: 2020-01-09 19:48:30
+ * @LastEditors: lixiang
+ * @LastEditTime: 2020-01-09 20:09:55
+ */
 'use strict'
 require('./check-versions')()
 
@@ -39,3 +47,4 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     ))
   })
 })
+

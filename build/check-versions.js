@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: lixiang
+ * @Date: 2020-01-09 19:48:30
+ * @LastEditors: lixiang
+ * @LastEditTime: 2020-01-09 20:10:01
+ */
 'use strict'
 const chalk = require('chalk')
 const semver = require('semver')
@@ -52,3 +60,4 @@ module.exports = function () {
     process.exit(1)
   }
 }
+
