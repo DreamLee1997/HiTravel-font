@@ -1,8 +1,8 @@
 {
-  "name": "mall-admin-web",
+  "name": "HiTravel-back",
   "version": "1.0.0",
-  "description": "mall后台管理前端",
-  "author": "macro",
+  "description": "HiTravel后台管理前端",
+  "author": "lixiang",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
