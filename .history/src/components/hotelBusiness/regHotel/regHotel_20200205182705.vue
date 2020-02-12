@@ -1,0 +1,92 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: lixiang
+ * @Date: 2020-02-05 14:19:43
+ * @LastEditors  : lixiang
+ * @LastEditTime : 2020-02-05 18:27:05
+ -->
+<template>
+    <div>
+        <el-card class="operate-container" >
+            <i class="el-icon-tickets"></i>
+            <span style="margin-top: 5px; font-size:18px">酒店注册</span>
+            <el-button
+                class="btn-add"
+                type="primary"
+                @click="handleAddHotel()"
+                size="mini">
+                添加
+            </el-button>
+        </el-card>
+        <el-card>
+                <el-form :model="regHotelInfo" :rules="rules" ref="regHotelForm" label-width="100px" class="regHotelForm">
+                <el-form-item label="法人姓名" prop="realname">
+                    <el-input v-model="regHotelInfo.realname"></el-input>
+                </el-form-item>
+                <el-form-item label="法人电话" prop="phone">
+                    <el-input v-model="regHotelInfo.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="身份证号" prop="cardId">
+                    <el-input v-model="regHotelInfo.cardId"></el-input>
+                </el-form-item>
+                <el-form-item label="身份邮箱" prop="email">
+                    <el-input v-model="regHotelInfo.email"></el-input>
+                </el-form-item>
+                <el-form-item label="酒店名称" prop="hotelName">
+                    <el-input v-model="regHotelInfo.hotelName"></el-input>
+                </el-form-item>
+                <el-form-item label="营业执照号码" prop="hotelCardId">
+                    <el-input v-model="regHotelInfo.hotelCardId"></el-input>
+                </el-form-item>
+                <el-form-item label="酒店名称" prop="hotelName">
+                    <el-input v-model="regHotelInfo.hotelName"></el-input>
+                </el-form-item>
+                <el-form-item label="所属街道" prop="streetCode">
+                    <el-input v-model="regHotelInfo.streetCode"></el-input>
+                </el-form-item>
+                <el-form-item label="酒店图片" prop="img">
+                    <el-input v-model="regHotelInfo.img"></el-input>
+                </el-form-item>
+                
+                <!-- <el-form-item>
+                    <el-button type="primary" @click="submitForm('regHotelInfo')">立即创建</el-button>
+                    <el-button @click="resetForm('regHotelInfo')">重置</el-button>
+                </el-form-item> -->
+            </el-form>
+        </el-card>
+        
+    </div>
+</template>
+
+<script>
+export default {
+    data () {
+        return {
+            regHotelInfo:{
+
+            },
+            rules: {
+
+            },
+        }
+    },
+    methods: {
+        handleAddHotel(){
+            
+        }
+    }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+.operate-container{
+    margin: 20px 0;
+    .el-icon-tickets{
+        font-size: large;
+    }
+   
+}
+
+</style>
